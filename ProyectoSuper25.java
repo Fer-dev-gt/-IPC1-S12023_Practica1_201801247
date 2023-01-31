@@ -124,9 +124,16 @@ public class ProyectoSuper25 {
                 System.out.println("LIMITE DE LISTA ALCANZADO");
                 break;                                                                                          // Salimos del ciclo principal "do-while"
             }
-          
-            preguntar_nuevo_producto();                                                                         // Invocamos funcion que pregunta al usuario si quiere ingresar otro producto
+            
+            System.out.println("¿Desea agregar otro producto?\n");                                                // Le preguntamos al cajero si quiere ingresar otro producto
+            boolean seguir = preguntar_continuar();                                                                         // Invocamos funcion que pregunta al usuario si quiere ingresar otro producto
             contador++;                                                                                         // Si decide ingresar otro producto aumentamos el "contador" de iteraciones en 1
+            
+            if(seguir){
+                System.out.println("INGRESANDO NUEVO PRODUCTO\n");
+            }else{
+                agregar_nuevo_producto = false;
+            }
             
         } while (agregar_nuevo_producto);                                                                       // Fin del ciclo "do-while", se revisa condicion
         
@@ -141,43 +148,24 @@ public class ProyectoSuper25 {
     }                                                                                                           // Fin metodo addNewProduct()
     
     
-    public static void preguntar_nuevo_producto(){
-        System.out.println("¿Desea agregar otro producto?\n"                                                // Le preguntamos al cajero si quiere ingresar otro producto
-                           + "1. Si\n"
-                           + "2. No\n");
-        String agregar_product_string = entrada.nextLine();                                                 // Guardamos respuesta
-        int agregar = parseInt(agregar_product_string);                                                   // La convertimos en tipo "int"
+    public static boolean preguntar_continuar(){
+        boolean seguir = true;
+        System.out.println("1. Si\n"                                                // Le preguntamos al cajero si quiere ingresar otro producto"1. Si\n"
+                         + "2. No\n");
+        String continuar_string = entrada.nextLine();                                                 // Guardamos respuesta
+        int continuar = parseInt(continuar_string);                                                   // La convertimos en tipo "int"
         
         
-        if (agregar == 1){                                                                                  // Validamos opcion "1"
-            System.out.println("INGRESANDO NUEVO PRODUCTO");
-        }else if(agregar == 2){
-            System.out.println("REGRESANDO A MENU PRINCIPAL");                                            // Validamos opcion "2"      
-            agregar_nuevo_producto = false;                                                                 // Cambiamos "agregar_nuevo_producto" a false, lo que terminara el ciclo principal
+        if (continuar == 1){                                                                                  // Validamos opcion "1"
+            seguir = true;
+        }else if(continuar == 2){
+            System.out.println("\nREGRESANDO A MENU PRINCIPAL");                                            // Validamos opcion "2"      
+            seguir = false;                                                                 // Cambiamos "agregar_nuevo_producto" a false, lo que terminara el ciclo principal
         }else{
             System.out.println("ERROR ***** Opcion invalida, ingrese datos nuevamente");                  // Si cajero no ingreso una opcion valida:
-            preguntar_nuevo_producto();                                                                     // Volvemos a preguntar usando recursividad
+            preguntar_continuar();                                                                     // Volvemos a preguntar usando recursividad
         }
-    }
-    
-    
-    public static void preguntar_nuevo_descuento(){
-        System.out.println("¿Desea agregar otro descuento?\n"                                               // Le preguntamos al cajero si quiere ingresar otro codigo de descuento
-                           + "1. Si\n"
-                           + "2. No\n");
-        String agregar_descuento_string = entrada.nextLine();                                               // Guardamos respuesta
-        int agregar = parseInt(agregar_descuento_string);                                                 // La convertimos en tipo "int"
-        
-        
-        if (agregar == 1){                                                                                  // Validamos opcion "1"
-            System.out.println("INGRESANDO NUEVO CODIGO");
-        }else if(agregar == 2){
-            System.out.println("REGRESANDO A MENU PRINCIPAL");                                           // Validamos opcion "2"    
-            agregar_nuevo_descuento = false;                                                                // Cambiamos "agregar_nuevo_descuento" a false, lo que terminara el ciclo principal
-        }else{
-            System.out.println("ERROR ***** Opcion invalida, ingrese datos nuevamente");                  // Si cajero no ingreso una opcion valida:  
-            preguntar_nuevo_descuento();                                                                    // Volvemos a preguntar usando recursividad
-        }
+        return seguir;
     }
     
     
@@ -242,9 +230,17 @@ public class ProyectoSuper25 {
                 System.out.println("LIMITE DE LISTA ALCANZADO");
                 break;                                                                                  // Salimos del ciclo principal "do-while"
             }
-          
-            preguntar_nuevo_descuento();                                                                // Invocamos funcion que pregunta al usuario si quiere ingresar otro codigo
-            contador2++;                                                                                // Si decide ingresar otro producto aumentamos el "contador" de iteraciones en 1
+            
+            System.out.println("¿Desea agregar otro cupon?\n");                                       // Le preguntamos al cajero si quiere ingresar otro producto
+            boolean seguir = preguntar_continuar();                                                     // Invocamos funcion que pregunta al usuario si quiere ingresar otro cupon
+            contador2++;                                                                                // Si decide ingresar otro codigo aumentamos el "contador" de iteraciones en 1
+            
+            
+            if(seguir){
+                System.out.println("INGRESANDO NUEVO CUPON\n");
+            }else{
+                agregar_nuevo_descuento = false;
+            }
             
         } while (agregar_nuevo_descuento);                                                              // Fin del ciclo "do-while", se revisa condicion
         
@@ -294,7 +290,12 @@ public class ProyectoSuper25 {
         System.out.println("-----LISTADO DE PRODUCTOS DISPONIBLES------");
         System.out.println("-----Articulos disponibles en la tienda----- ");
         System.out.println("\nCODIGO DE PRODUCTO    PRODUCTO    PRECIO");
+        int[] lista_sub_totales = new int[20]; 
+        int[] lista_cantidad_compradas = new int [20];
+        String[] productos_factura = new String [20];
         int final_de_lista = 0;
+        int total_compra_sin_descuento = 0;
+        int contador_compra = 0;
         boolean seguir_comprando = true;
         
         
@@ -322,14 +323,43 @@ public class ProyectoSuper25 {
                 System.out.println("¿Cuantos articulos de '" + product_list[(codigo_producto - 1)] + "' desea comprar?");
                 String cantidad_producto_string = entrada.nextLine();
                 int cantidad_producto = parseInt(cantidad_producto_string);
-                System.out.println("**** Se compraron " + cantidad_producto + " articulos de '" + product_list[(codigo_producto - 1)] + "'");
+                System.out.println("\n**** Se compraron " + cantidad_producto + " articulos de '" + product_list[(codigo_producto - 1)] + "' ****\n");
+                
+                lista_cantidad_compradas[contador_compra] = cantidad_producto;
+                lista_sub_totales[contador_compra] = cantidad_producto * price_list[codigo_producto - 1];
+                productos_factura[contador_compra] = product_list[(codigo_producto - 1)];
+                contador_compra++;
                 
                 
-                seguir_comprando = false;
+                System.out.println("¿Desea comprar otro producto?\n");
+                boolean seguir = preguntar_continuar(); 
+                
+                if(seguir){
+                    System.out.println("INGRESANDO NUEVO PRODUCTO\n");
+                }else{
+                    seguir_comprando = false;
+                }
             }
            
-           
         }while(seguir_comprando);
+        
+        System.out.println("\n-----COMPRA FINALIZADA-----\n");
+        System.out.println("Lista de subtotales\n");
+        
+        
+        for (int i = 0; i < lista_tienda_final.length; i++) {                                           // Creamos ciclo que para mostrar los codigos y sus porcentajes
+            if(product_list[i] != null){
+            System.out.println(productos_factura[i] + " x " + lista_cantidad_compradas[i] + " = Q" + lista_sub_totales[i]);
+            }
+        }
+        
+        
+        for(int subtotal : lista_sub_totales){
+            total_compra_sin_descuento += subtotal;
+        }
+        
+        
+        System.out.println("\nEl total de la compra es de: \n" + total_compra_sin_descuento + "\n");
         
     }
 }
