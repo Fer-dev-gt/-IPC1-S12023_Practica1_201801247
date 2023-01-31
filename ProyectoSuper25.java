@@ -44,7 +44,7 @@ public class ProyectoSuper25 {
         System.out.println("Ingrese número de opción a realizar:\n"
                             + "1. Agregar nuevos productos.\n"
                             + "2. Agregar cupones de descuento.\n"
-                            + "3. Realizar ventas.\n"
+                            + "3. Realizar venta.\n"
                             + "4. Realizar reporte.\n");
         String option = entrada.nextLine();
         
@@ -273,20 +273,15 @@ public class ProyectoSuper25 {
             System.out.println("Ingrese número de NIT de '" + nombre_cliente + "'");
             String nit_del_cliente = entrada.nextLine();
             System.out.println("NIT de '" + nombre_cliente + "' es: " + nit_del_cliente);
-            hacer_pedido();                                                                                         // Invoco a funcion 
+            hacer_pedido(nombre_cliente);                                                                                         // Invoco a funcion 
         }else if(tiene_nit == 2){
             nit_string = "C/F";
             System.out.println("NIT del cliente: " + nombre_cliente + " quedo como: " + nit_string);
-            hacer_pedido();                                                                                         // Invoco a funcion
+            hacer_pedido(nombre_cliente);                                                                                         // Invoco a funcion
         }else{
             System.out.println("ERROR ***** Opcion invalida, ingrese datos nuevamente");
             make_sale();                                                                                            // Use recursividad
         }
-        
-        
-        
-        
-        
     }
     
     
@@ -295,8 +290,46 @@ public class ProyectoSuper25 {
     }
     
     
-    public static void hacer_pedido(){
+    public static void hacer_pedido(String nombre_cliente){
         System.out.println("-----LISTADO DE PRODUCTOS DISPONIBLES------");
+        System.out.println("-----Articulos disponibles en la tienda----- ");
+        System.out.println("\nCODIGO DE PRODUCTO    PRODUCTO    PRECIO");
+        int final_de_lista = 0;
+        boolean seguir_comprando = true;
+        
+        
+        for (int i = 0; i < lista_tienda_final.length; i++) {                                                   // Creamos ciclo que muestra los productos y sus precios
+            if(product_list[i] == null){
+                System.out.println("\n-----FIN DE PRODUCTOS DISPONIBLES (los demas espacios en lista son 'null')\n");
+                final_de_lista = (i);
+                break;
+            } 
+            
+            System.out.print("#"+ (i+1) + "                    " + product_list[i] + "        Q" + price_list[i]);                                           // Mostramos los productos y precios
+            System.out.println("");
+        }
+        
+        do{
+            System.out.println("--> INGRESE COGIDO DEL PRODUCTO (DEL 1 AL " + final_de_lista + ")"); 
+            String codigo_string = entrada.nextLine();
+            int codigo_producto = parseInt(codigo_string);
+            
+            
+            if(codigo_producto < 1 || codigo_producto > final_de_lista){
+                System.out.println("ERROR ******* Ingrese codigo de producto valido");
+                continue;
+            }else{
+                System.out.println("¿Cuantos articulos de '" + product_list[(codigo_producto - 1)] + "' desea comprar?");
+                String cantidad_producto_string = entrada.nextLine();
+                int cantidad_producto = parseInt(cantidad_producto_string);
+                System.out.println("**** Se compraron " + cantidad_producto + " articulos de '" + product_list[(codigo_producto - 1)] + "'");
+                
+                
+                seguir_comprando = false;
+            }
+           
+           
+        }while(seguir_comprando);
         
     }
 }
