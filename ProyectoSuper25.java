@@ -12,7 +12,7 @@ public class ProyectoSuper25 {
         static boolean agregar_nuevo_producto = true;
         
         
-        static String[][] lista_tienda_final = new String[3][2];
+        static String[][] lista_tienda_final = new String[20][2];
         
         
     
@@ -76,11 +76,11 @@ public class ProyectoSuper25 {
         System.out.println("LIMITE TOTAL DE PRODUCTOS: 20");
         int contador = 1;
         
-                                    do {
+                                    do { 
                                         boolean ya_ingresado = false;                                       // Creamos variable tipo "boolean", la inicializamos como "false"
                                         System.out.println("[ Iteracion #" + (contador) + " ]");               // Mostramos por cual iteracion vamos
-                                        System.out.println("Ingrese nombre del producto:");  
                                         System.out.println("Contador_producto: " + contador_producto);
+                                        System.out.println("Ingrese nombre del producto:");  
                                         String product_name = entrada.nextLine();                           // Guardamos producto en variable "product_name"
                                         
                                         
@@ -118,7 +118,7 @@ public class ProyectoSuper25 {
                                         }
                                       
                                         contador_producto++;  
-                                        if(contador_producto > 2){
+                                        if(contador_producto > 19){
                                             System.out.println("LIMITE DE LISTA ALCANZADO");
                                             break;
                                         }
@@ -127,17 +127,16 @@ public class ProyectoSuper25 {
                                         contador++;
                                     } while (agregar_nuevo_producto);
                                     
-                                    System.out.println("-----Articulos de la compra----- ");
-                                    for (int i = 0; i < 3; i++) {                                           // Creamos ciclo que para mostrar los productos y sus precios
-                                        System.out.print(product_list[i] + ", " + price_list[i]);           // Mostramos los productos y precios
-                                        System.out.println("");
-                                    }
-                                    
-                                    menu_principal();
+                                System.out.println("-----Articulos disponibles en la tienda----- ");
+                                for (int i = 0; i < lista_tienda_final.length; i++) {                                           // Creamos ciclo que para mostrar los productos y sus precios
+                                    System.out.print(product_list[i] + ", " + price_list[i]);           // Mostramos los productos y precios
+                                    System.out.println("");
+                                }
+                                  
+                                menu_principal();
     }                                                                                                   // Fin metodo addNewProduct()
     
     public static void preguntar_nuevo_producto(){
-        
         System.out.println("¿Desea agregar otro producto?\n"
                            + "1. Si\n"
                            + "2. No\n");
@@ -154,12 +153,7 @@ public class ProyectoSuper25 {
             System.out.println("ERROR ***** Opcion invalida, ingrese datos nuevamente");
             preguntar_nuevo_producto();                                                                                            // Use recursividad
         }
-        
     }
-    
-    
-    
-    
     
     
     
