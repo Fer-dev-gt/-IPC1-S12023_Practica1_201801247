@@ -6,14 +6,16 @@ import static java.lang.Integer.parseInt;
  */
 public class ProyectoSuper25 {
         static Scanner entrada = new Scanner(System.in);                  // Creamos objeto global "entrada" tipo Scanner 
-        static String[] product_list = new String[20];                           // Declaro lista de productos con 3 espacios, esta vacia por ahora
-        static int[] price_list = new int[20];                                   // Declaro lista de precios de productos con 3 espacios, esta vacia por ahora
-        static int contador_producto = 0;
-        static boolean agregar_nuevo_producto = true;
+        static String[][] lista_tienda_final = new String[20][2];               // Matriz de 2 dimensiones
+        static String[] product_list = new String[20];                          // Declaro lista de productos con 3 espacios, esta vacia por ahora
+        static int[] price_list = new int[20];                                  // Declaro lista de precios de productos con 3 espacios, esta vacia por ahora
         
-        
-        static String[][] lista_tienda_final = new String[20][2];
-        
+        static String[] descuento_list = new String[20];                        // Creamos lista donde se guardaran los diferentes codigos 
+        static int[] porcentaje_descuento = new int[20];                        // Creamos lista tipo "int" para los porcentajes de descuento
+        static int contador_producto = 0;                                       // Lleva el conteo de cuantos productos has sido ingresados exitosamente
+        static int contador_descuento = 0;                                      // Lleva el conteo de cuantos codigos de descuento has sido ingresados exitosamente
+        static boolean agregar_nuevo_producto = true;                           // Condicial para mantener ciclo while activo, se encuenta en "addNewProduct()"
+        static boolean agregar_nuevo_descuento = true;                          // Condicial para mantener ciclo while activo, se encuenta en "add_discount_coupon()"
         
     
     public static void main(String[] args) {                                    // Entry Point    
@@ -24,15 +26,14 @@ public class ProyectoSuper25 {
             System.out.println("Ingrese Contraseña: ");
             String password = entrada.nextLine();                               // Ingresamos "password"
             
-            if(user.equals("a") && password.equals("a")){
+            if(user.equals("a") && password.equals("a")){        // Verificamos que los datos sean correctos
                 menu_principal();                                               // Abrimos menu principal
             }else{
                 System.out.println("Datos Incorrectos...");
             }      
         }          
-    }                                                                           // Fin metodo main
+    }                                                                       // Fin metodo main
     
-
     
     public static void menu_principal(){
         System.out.println("""
@@ -70,153 +71,193 @@ public class ProyectoSuper25 {
     }                                                                           // Fin metodo menu_principal()
         
     
-    
     public static void addNewProduct(){
         System.out.println("-----Agregar nuevos productos-----");
         System.out.println("LIMITE TOTAL DE PRODUCTOS: 20");
-        int contador = 1;
+        int contador = 1;                                                       // Creo contador interno inicializado en 1, indica por cual registro vamos
         
-                                    do { 
-                                        boolean ya_ingresado = false;                                       // Creamos variable tipo "boolean", la inicializamos como "false"
-                                        System.out.println("[ Iteracion #" + (contador) + " ]");               // Mostramos por cual iteracion vamos
-                                        System.out.println("Contador_producto: " + contador_producto);
-                                        System.out.println("Ingrese nombre del producto:");  
-                                        String product_name = entrada.nextLine();                           // Guardamos producto en variable "product_name"
-                                        
-                                        
-                                        for (int i = 0; i < lista_tienda_final.length; i++) {                   // lista_tienda_final.length es igual a 20
-                                            if(product_list[i] != null){
-                                                if(product_list[i].equals(product_name)){                // Revisamos que "product_name" no se encuentre en lista "product_list"
-                                                    ya_ingresado = true;                                        // Si ya existe en lista, cambiamos "ya_ingresado" a "true"
-                                                    System.out.println("Ya EXISTE");                         
-                                                    break;                                                      // Salimos de este ciclo
-                                                }
-                                            }
-                                        }
-                                        
-                                        
-                                        if (ya_ingresado) {                                                                         // Verificamos si ya existe el producto en la lista
-                                            System.out.println("Este articulo ya se encuentra en la lista");                          
-                                            continue;                                                                                    // Regresamos un paso en el "for" principal usando "i--"
-                                        }else{                                                                                      // Si el producto no existe en la lista entonces:
-                                            for (int i = contador_producto; i < lista_tienda_final.length; i++) {     
-               /**/                             product_list[i] = product_name;                                                         // Agregamos "product_name" a lista "product_list"
-                                                System.out.println("Producto '" + product_list[i] + "' ingresado correctamente");       
-                                                System.out.println("Ingrese precio de '" + product_list[i] + "'");                      // Pedimos que ingrese el precio del producto que acaba de ingresar
-                                                String precio_string = entrada.nextLine();                                              // Guardamos dato tipo String a "precio_string"
-                                                int precio = parseInt(precio_string);                                                 // Casteamos el dato String a uno tipo int y lo guardamos en "precio"
-                                                
-                                                if(precio > 0){                                                                         // Revisamos que el producto no sea negativo
-                  /**/                              price_list[i] = precio;                                                             // Lo agregamos a la lista "price_list"
-                                                    System.out.println("Precio es: " + price_list[i]);                                  
-                                                    break;
-                                                }else{
-                                                    System.out.println("Precio no puede ser negativo, ingrese producto de nuevo");   
-                                                    continue;
-                                                }
-                                            }
-                                        }
-                                      
-                                        contador_producto++;  
-                                        if(contador_producto > 19){
-                                            System.out.println("LIMITE DE LISTA ALCANZADO");
-                                            break;
-                                        }
-                                      
-                                        preguntar_nuevo_producto();
-                                        contador++;
-                                    } while (agregar_nuevo_producto);
-                                    
-                                System.out.println("-----Articulos disponibles en la tienda----- ");
-                                for (int i = 0; i < lista_tienda_final.length; i++) {                                           // Creamos ciclo que para mostrar los productos y sus precios
-                                    System.out.print(product_list[i] + ", " + price_list[i]);           // Mostramos los productos y precios
-                                    System.out.println("");
-                                }
-                                  
-                                menu_principal();
-    }                                                                                                   // Fin metodo addNewProduct()
+        do {                                                                    // Creamos ciclo principal con un "do-while"
+            boolean ya_ingresado = false;                                       // Creamos variable tipo "boolean", la inicializamos como "false"
+            System.out.println("[ Iteracion #" + (contador) + " ]");            // Mostramos por cual iteracion vamos
+            System.out.println("Contador_producto: " + contador_producto);
+            System.out.println("Ingrese nombre del producto:");  
+            String product_name = entrada.nextLine();                           // Guardamos producto en variable "product_name"
+            
+            
+            for (int i = 0; i < lista_tienda_final.length; i++) {               // Creamos ciclo secundario que itera dentro de lista "product_list", "lista_tienda_final.length" es igual a 20
+                if(product_list[i] != null){                                    // Verificamos que los valores existenentes no sean "null"
+                    if(product_list[i].equals(product_name)){            // Revisamos que "product_name" no se encuentre en lista "product_list"
+                        ya_ingresado = true;                                    // Si ya existe en lista, cambiamos "ya_ingresado" a "true"
+                        System.out.println("Ya EXISTE");                         
+                        break;                                                  // Salimos de este ciclo
+                    }
+                }
+            }
+            
+            
+            if (ya_ingresado) {                                                                                 // Verificamos si ya existe el producto en la lista
+                System.out.println("Este articulo ya se encuentra en la lista");                          
+                continue;                                                                                       // Ignoramos las demas instrucciones y volvemos al inicio del ciclo principal
+            }else{                                                                                              // Si el producto no existe en la lista entonces:
+                for (int i = contador_producto; i < lista_tienda_final.length; i++) {                           // Llevamos seguimiento de los productos ingresado con "contador_producto"
+                    product_list[i] = product_name;                                                             // Agregamos "product_name" a lista "product_list"
+                    System.out.println("Producto '" + product_list[i] + "' ingresado correctamente");           
+                    System.out.println("Ingrese precio de '" + product_list[i] + "'");                          // Pedimos que ingrese el precio del producto que acaba de ingresar
+                    String precio_string = entrada.nextLine();                                                  // Guardamos dato tipo String a "precio_string"
+                    int precio = parseInt(precio_string);                                                     // Casteamos el dato String a uno tipo int y lo guardamos en "precio"
+                    
+                    if(precio > 0){                                                                             // Revisamos que el producto no sea negativo
+                        price_list[i] = precio;                                                                 // Lo agregamos a la lista "price_list"
+                        System.out.println("Precio es: " + price_list[i]);                                  
+                        break;                                                                                  // Salimos de este ciclo
+                    }else{                                                                                      // Si el precio es negativo, entonces:
+                        System.out.println("Precio no puede ser negativo, ingrese producto de nuevo");   
+                        continue;                                                                               // Regresamos al inicio de este ciclo
+                    }
+                }
+            }
+            
+          
+            contador_producto++;                                                                                // Al ingresar correctamente un nuevo producto aumentamos "contador_producto" en 1
+            
+            if(contador_producto > 19){                                                                         // Vericamos que no hayan mas de 20 productos registrados
+                System.out.println("LIMITE DE LISTA ALCANZADO");
+                break;                                                                                          // Salimos del ciclo principal "do-while"
+            }
+          
+            preguntar_nuevo_producto();                                                                         // Invocamos funcion que pregunta al usuario si quiere ingresar otro producto
+            contador++;                                                                                         // Si decide ingresar otro producto aumentamos el "contador" de iteraciones en 1
+            
+        } while (agregar_nuevo_producto);                                                                       // Fin del ciclo "do-while", se revisa condicion
+        
+        
+        System.out.println("-----Articulos disponibles en la tienda----- ");
+        for (int i = 0; i < lista_tienda_final.length; i++) {                                                   // Creamos ciclo que muestra los productos y sus precios
+            System.out.print(product_list[i] + ", " + price_list[i]);                                           // Mostramos los productos y precios
+            System.out.println("");
+        }
+      
+        menu_principal();                                                                                       // Regresamos al menu principal
+    }                                                                                                           // Fin metodo addNewProduct()
+    
     
     public static void preguntar_nuevo_producto(){
-        System.out.println("¿Desea agregar otro producto?\n"
+        System.out.println("¿Desea agregar otro producto?\n"                                                // Le preguntamos al cajero si quiere ingresar otro producto
                            + "1. Si\n"
                            + "2. No\n");
-        String agregar_product_string = entrada.nextLine();
-        int agregar = parseInt(agregar_product_string);
+        String agregar_product_string = entrada.nextLine();                                                 // Guardamos respuesta
+        int agregar = parseInt(agregar_product_string);                                                   // La convertimos en tipo "int"
         
         
-        if (agregar == 1){
+        if (agregar == 1){                                                                                  // Validamos opcion "1"
             System.out.println("INGRESANDO NUEVO PRODUCTO");
         }else if(agregar == 2){
-            System.out.println("REGRESANDO A MENU PRINCIPAL");
-            agregar_nuevo_producto = false;
+            System.out.println("REGRESANDO A MENU PRINCIPAL");                                            // Validamos opcion "2"      
+            agregar_nuevo_producto = false;                                                                 // Cambiamos "agregar_nuevo_producto" a false, lo que terminara el ciclo principal
         }else{
-            System.out.println("ERROR ***** Opcion invalida, ingrese datos nuevamente");
-            preguntar_nuevo_producto();                                                                                            // Use recursividad
+            System.out.println("ERROR ***** Opcion invalida, ingrese datos nuevamente");                  // Si cajero no ingreso una opcion valida:
+            preguntar_nuevo_producto();                                                                     // Volvemos a preguntar usando recursividad
         }
     }
     
     
+    public static void preguntar_nuevo_descuento(){
+        System.out.println("¿Desea agregar otro descuento?\n"                                               // Le preguntamos al cajero si quiere ingresar otro codigo de descuento
+                           + "1. Si\n"
+                           + "2. No\n");
+        String agregar_descuento_string = entrada.nextLine();                                               // Guardamos respuesta
+        int agregar = parseInt(agregar_descuento_string);                                                 // La convertimos en tipo "int"
+        
+        
+        if (agregar == 1){                                                                                  // Validamos opcion "1"
+            System.out.println("INGRESANDO NUEVO CODIGO");
+        }else if(agregar == 2){
+            System.out.println("REGRESANDO A MENU PRINCIPAL");                                           // Validamos opcion "2"    
+            agregar_nuevo_descuento = false;                                                                // Cambiamos "agregar_nuevo_descuento" a false, lo que terminara el ciclo principal
+        }else{
+            System.out.println("ERROR ***** Opcion invalida, ingrese datos nuevamente");                  // Si cajero no ingreso una opcion valida:  
+            preguntar_nuevo_descuento();                                                                    // Volvemos a preguntar usando recursividad
+        }
+    }
+    
     
     public static void add_discount_coupon(){
         System.out.println("-----Agregar cupones de descuento------");
-        System.out.println("¿Cuantos códigos de descuento ingresará?");                     
-        String descuento_string = entrada.nextLine();                                                   // Guardamos la cantidad de codigos que se van a ingresar
-        int cantidad_de_codigos = parseInt(descuento_string);                                         // Lo convertimos a tipo "int"
-        String[] descuento_list = new String[cantidad_de_codigos];                                      // Creamos lista donde se guardaran los diferentes codigos 
-        int[] porcentaje_descuento = new int[cantidad_de_codigos];                                      // Creamos lista tipo "int" para los porcentajes de descuento
+        System.out.println("LIMITE TOTAL DE DESCUENTOS: 20");
+        int contador2 = 1;                                                                              // Creo contador interno inicializado en 1, indica por cual registro vamos
         
-        
-         for (int i = 0; i < cantidad_de_codigos; i++) {                                                // Ciclo principal
+        do {
             boolean existe_descuento = false, longitud_erronea = false;                                 // Declaramos variable "existe_descuento" y "longitud_erronea" como "false"
-            System.out.println("[ Iteracion #" + (i + 1) + " ]");                                       // Mostramos numero de iteracion
-            System.out.println("--> Ingrese código de descuento: (4 caracteres)");                    // Solicitamos un codigo de 4 caracteres
+            System.out.println("[ Iteracion #" + (contador2) + " ]");                                   // Mostramos por cual iteracion vamos
+            System.out.println("Descuentos ya registrados: " + contador_producto);                      // Le mostramos al cajero cuantos codigos ya estan registrados
+            System.out.println("--> Ingrese código de descuento: (4 caracteres)");  
             String codigo = entrada.nextLine();                                                         // Lo guardamos en variable "codigo"
             int longitud_codigo = codigo.length();                                                      // Guardamos la longitud de la palabra adentro de "codigo"
             System.out.println("Codigo '" + codigo + "' es de " + longitud_codigo + " caracteres");     // Mostramos la longitud del codigo
             
             
             if(longitud_codigo != 4){                                                                   // Verificamos que el codigo sea exactamente de 4 digitos
-                    System.out.println("ERROR ********* El codigo tiene que ser de 4 caracteres");
-                    longitud_erronea = true;                                                            // Si no es de 4 digitos "longitud_erronea" se vuelve "true"
+                System.out.println("ERROR ********* El codigo tiene que ser de 4 caracteres");
+                longitud_erronea = true;                                                                // Si no es de 4 digitos "longitud_erronea" se vuelve "true"
+                continue;                                                                               // Regresamos al inicio del ciclo principal                               
             }
- 
             
-            for (int j = 0; j < i; j++) {                                                               // Ciclo secundario, donde iteramos la lista "descuento_list"          
-                if(descuento_list[j].equals(codigo)){                                            // Verificamos que no exista ya el descuento
-                    System.out.println("Este codigo YA ESTA registrado");
-                    existe_descuento = true;                                                            // Si ya existe el codigo, marcamos "existe_descuento" como "true"
-                    break;                                                                              // Salimos del ciclo secundario
+            
+            for (int i = 0; i < lista_tienda_final.length; i++) {                                       // Creamos ciclo secundario que itera dentro de lista "descuento_list", "lista_tienda_final.length" es igual a 20
+                if(descuento_list[i] != null){                                                          // Verificamos que los valores existenentes no sean "null"
+                    if(descuento_list[i].equals(codigo)){                                        // Revisamos que "product_name" no se encuentre en lista "product_list"
+                        existe_descuento = true;                                                        // Si ya existe en lista, cambiamos "ya_ingresado" a "true"
+                        System.out.println("Ya EXISTE DESCUENTO ");                         
+                        break;                                                                          // Salimos de este ciclo
+                    }
                 }
             }
             
             
-            if (existe_descuento || longitud_erronea) {                                                 // Si alguna de las dos condiciones es "true" le pedimos que ingrese otro codigo        
-                System.out.println("Ingrese otro codigo");                                            // Damos un paso atras en el ciclo principal
-                i--;                                                                                       
-            }else{                                                                                     
-                descuento_list[i] = codigo;                                                                         // Guardamos "codigo" en la lista "descuento_list"
-                System.out.println("Código '" + descuento_list[i] + "' ingresado correctamente");  
-                System.out.println("Ingrese Porcentaje de Descuento del codigo '" + descuento_list[i] + "'");
-                String porcentaje_string = entrada.nextLine();                                                      // Solicitamos que ingrese la cantidad del descuento del codigo
-                int porcentaje = parseInt(porcentaje_string);                                                     // Convertimos el dato a tipo "int"
-                
-                if(porcentaje > 0 && porcentaje < 100){                                                             // Verificamos que porcentaje este en el rango de [1,99]
-                    porcentaje_descuento[i] = porcentaje;
-                    System.out.println(porcentaje_descuento[i]+ "% de Descuento");
-                }else{
-                    System.out.println("ERROR ****** NO SE ACEPTAN NUMEROS NEGATIVOS O MAYORES DE 100%, INGRESE CODIGO DE NUEVO");
-                    i--; 
+            if (existe_descuento || longitud_erronea) {                                                                 // Si alguna de las dos condiciones es "true" le pedimos que ingrese otro codigo        
+                System.out.println("Ingrese otro codigo");                                                            
+                continue;                                                                                               // Regresamos al inicio del ciclo principal
+            }else{
+                for (int i = contador_descuento; i < lista_tienda_final.length; i++) {                                  // Creamos ciclo secundarios para ingresar "codigo" y "porcentage" de descuento
+                    descuento_list[i] = codigo;                                                                         // Guardamos "codigo" en la lista "descuento_list"
+                    System.out.println("Código '" + descuento_list[i] + "' ingresado correctamente");  
+                    System.out.println("Ingrese Porcentaje de Descuento del codigo '" + descuento_list[i] + "'");
+                    String porcentaje_string = entrada.nextLine();                                                      // Solicitamos que ingrese la cantidad del descuento del codigo
+                    int porcentaje = parseInt(porcentaje_string);                                                     // Convertimos el dato a tipo "int"
+                    
+                    if(porcentaje > 0 && porcentaje < 100){                                                             // Verificamos que porcentaje este en el rango de [1,99]
+                        porcentaje_descuento[i] = porcentaje;                                                           // Guardamos "porcentaje" en lista "porcentaje_descuento"
+                        System.out.println(porcentaje_descuento[i]+ "% de Descuento");
+                        break;                                                                                          // Salimos de ciclo secundario
+                    }else{
+                        System.out.println("ERROR ****** NO SE ACEPTAN NUMEROS NEGATIVOS O MAYORES DE 100%, INGRESE CODIGO DE NUEVO");
+                        continue;                                                                                       // Regresamos al inicio del ciclo principal
+                    }
                 }
             }
-        }
+            
+            contador_descuento++;                                                                       // Al ingresar correctamente un nuevo codigo aumentamos "contador_descuento" en 1
+            
+            if(contador_descuento > 19){                                                                // Vericamos que no hayan mas de 20 productos registrados
+                System.out.println("LIMITE DE LISTA ALCANZADO");
+                break;                                                                                  // Salimos del ciclo principal "do-while"
+            }
+          
+            preguntar_nuevo_descuento();                                                                // Invocamos funcion que pregunta al usuario si quiere ingresar otro codigo
+            contador2++;                                                                                // Si decide ingresar otro producto aumentamos el "contador" de iteraciones en 1
+            
+        } while (agregar_nuevo_descuento);                                                              // Fin del ciclo "do-while", se revisa condicion
+        
          
-         
-        System.out.println("-----Codigos de descuento utilizados----- ");                                         // Mostramos los productos y precios 
-        for (int i = 0; i < cantidad_de_codigos; i++) {                                                             // Creamos ciclo que para mostrar los productos y sus precios
+        System.out.println("-----CODIGOS DE DESCUENTO REGISTRADOS----- ");                            // Mostramos los codigos y porcentajes de descuento 
+        for (int i = 0; i < lista_tienda_final.length; i++) {                                           // Creamos ciclo que para mostrar los codigos y sus porcentajes
             System.out.println(descuento_list[i] + ", " + porcentaje_descuento[i] + "% De Descuento");
             System.out.println("");
         }
-    }                                                                                                               // Fin metodo add_discoutn_coupon()
+        
+        menu_principal();                                                                               // Regresamos al menu principal
+    }                                                                                                   // Fin metodo add_discoutn_coupon()
+    
     
     public static void make_sale(){
         System.out.println("-----REALIZAR VENTAS------");
@@ -247,6 +288,7 @@ public class ProyectoSuper25 {
         
         
     }
+    
     
     public static void make_report(){
          System.out.println("opcion 4");
