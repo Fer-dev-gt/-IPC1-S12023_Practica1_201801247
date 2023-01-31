@@ -6,13 +6,13 @@ import static java.lang.Integer.parseInt;
  */
 public class ProyectoSuper25 {
         static Scanner entrada = new Scanner(System.in);                  // Creamos objeto global "entrada" tipo Scanner 
-        static String[] product_list = new String[3];                           // Declaro lista de productos con 3 espacios, esta vacia por ahora
-        static int[] price_list = new int[3];                                   // Declaro lista de precios de productos con 3 espacios, esta vacia por ahora
+        static String[] product_list = new String[20];                           // Declaro lista de productos con 3 espacios, esta vacia por ahora
+        static int[] price_list = new int[20];                                   // Declaro lista de precios de productos con 3 espacios, esta vacia por ahora
         static int contador_producto = 0;
         static boolean agregar_nuevo_producto = true;
         
         
-        static String[][] lista_tienda_final = new String[20][2];
+        static String[][] lista_tienda_final = new String[3][2];
         
         
     
@@ -73,20 +73,24 @@ public class ProyectoSuper25 {
     
     public static void addNewProduct(){
         System.out.println("-----Agregar nuevos productos-----");
+        System.out.println("LIMITE TOTAL DE PRODUCTOS: 20");
+        int contador = 1;
         
                                     do {
                                         boolean ya_ingresado = false;                                       // Creamos variable tipo "boolean", la inicializamos como "false"
-                                        int contador = 1;
                                         System.out.println("[ Iteracion #" + (contador) + " ]");               // Mostramos por cual iteracion vamos
                                         System.out.println("Ingrese nombre del producto:");  
+                                        System.out.println("Contador_producto: " + contador_producto);
                                         String product_name = entrada.nextLine();                           // Guardamos producto en variable "product_name"
                                         
                                         
                                         for (int i = 0; i < lista_tienda_final.length; i++) {                   // lista_tienda_final.length es igual a 20
-                                            if(product_list[i].equals(product_name)){                // Revisamos que "product_name" no se encuentre en lista "product_list"
-                                                ya_ingresado = true;                                        // Si ya existe en lista, cambiamos "ya_ingresado" a "true"
-                                                System.out.println("Ya EXISTE");                         
-                                                break;                                                      // Salimos de este ciclo
+                                            if(product_list[i] != null){
+                                                if(product_list[i].equals(product_name)){                // Revisamos que "product_name" no se encuentre en lista "product_list"
+                                                    ya_ingresado = true;                                        // Si ya existe en lista, cambiamos "ya_ingresado" a "true"
+                                                    System.out.println("Ya EXISTE");                         
+                                                    break;                                                      // Salimos de este ciclo
+                                                }
                                             }
                                         }
                                         
@@ -94,9 +98,7 @@ public class ProyectoSuper25 {
                                         if (ya_ingresado) {                                                                         // Verificamos si ya existe el producto en la lista
                                             System.out.println("Este articulo ya se encuentra en la lista");                          
                                             continue;                                                                                    // Regresamos un paso en el "for" principal usando "i--"
-                                            
                                         }else{                                                                                      // Si el producto no existe en la lista entonces:
-                                            
                                             for (int i = contador_producto; i < lista_tienda_final.length; i++) {     
                /**/                             product_list[i] = product_name;                                                         // Agregamos "product_name" a lista "product_list"
                                                 System.out.println("Producto '" + product_list[i] + "' ingresado correctamente");       
@@ -105,31 +107,33 @@ public class ProyectoSuper25 {
                                                 int precio = parseInt(precio_string);                                                 // Casteamos el dato String a uno tipo int y lo guardamos en "precio"
                                                 
                                                 if(precio > 0){                                                                         // Revisamos que el producto no sea negativo
-                  /**/                          price_list[i] = precio;                                                             // Lo agregamos a la lista "price_list"
+                  /**/                              price_list[i] = precio;                                                             // Lo agregamos a la lista "price_list"
                                                     System.out.println("Precio es: " + price_list[i]);                                  
-                                                    
+                                                    break;
                                                 }else{
                                                     System.out.println("Precio no puede ser negativo, ingrese producto de nuevo");   
                                                     continue;
                                                 }
                                             }
                                         }
-                                        
-                                      preguntar_nuevo_producto();
-                                      contador_producto++;
-                                      contador++;
                                       
-                                        
+                                        contador_producto++;  
+                                        if(contador_producto > 2){
+                                            System.out.println("LIMITE DE LISTA ALCANZADO");
+                                            break;
+                                        }
+                                      
+                                        preguntar_nuevo_producto();
+                                        contador++;
                                     } while (agregar_nuevo_producto);
                                     
                                     System.out.println("-----Articulos de la compra----- ");
-                                      for (int i = 0; i < 3; i++) {                                           // Creamos ciclo que para mostrar los productos y sus precios
-                                          System.out.print(product_list[i] + ", " + price_list[i]);           // Mostramos los productos y precios
-                                          System.out.println("");
-                                      }
+                                    for (int i = 0; i < 3; i++) {                                           // Creamos ciclo que para mostrar los productos y sus precios
+                                        System.out.print(product_list[i] + ", " + price_list[i]);           // Mostramos los productos y precios
+                                        System.out.println("");
+                                    }
                                     
                                     menu_principal();
-        
     }                                                                                                   // Fin metodo addNewProduct()
     
     public static void preguntar_nuevo_producto(){
