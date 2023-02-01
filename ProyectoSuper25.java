@@ -6,12 +6,14 @@ import static java.lang.Integer.parseInt;
  */
 public class ProyectoSuper25 {
         static Scanner entrada = new Scanner(System.in);                  // Creamos objeto global "entrada" tipo Scanner 
+        static Scanner entrada2 = new Scanner(System.in); 
         static String[][] lista_tienda_final = new String[20][2];               // Matriz de 2 dimensiones
         static String[] product_list = new String[20];                          // Declaro lista de productos con 3 espacios, esta vacia por ahora
         static int[] price_list = new int[20];                                  // Declaro lista de precios de productos con 3 espacios, esta vacia por ahora
         
         static String[] descuento_list = new String[20];                        // Creamos lista donde se guardaran los diferentes codigos 
         static int[] porcentaje_descuento = new int[20];                        // Creamos lista tipo "int" para los porcentajes de descuento
+        
         static int contador_producto = 0;                                       // Lleva el conteo de cuantos productos has sido ingresados exitosamente
         static int contador_descuento = 0;                                      // Lleva el conteo de cuantos codigos de descuento has sido ingresados exitosamente
         static boolean agregar_nuevo_producto = true;                           // Condicial para mantener ciclo while activo, se encuenta en "addNewProduct()"
@@ -177,7 +179,7 @@ public class ProyectoSuper25 {
         do {
             boolean existe_descuento = false, longitud_erronea = false;                                 // Declaramos variable "existe_descuento" y "longitud_erronea" como "false"
             System.out.println("[ Iteracion #" + (contador2) + " ]");                                   // Mostramos por cual iteracion vamos
-            System.out.println("Descuentos ya registrados: " + contador_producto);                      // Le mostramos al cajero cuantos codigos ya estan registrados
+            System.out.println("Descuentos ya registrados: " + contador_descuento);                      // Le mostramos al cajero cuantos codigos ya estan registrados
             System.out.println("--> Ingrese código de descuento: (4 caracteres)");  
             String codigo = entrada.nextLine();                                                         // Lo guardamos en variable "codigo"
             int longitud_codigo = codigo.length();                                                      // Guardamos la longitud de la palabra adentro de "codigo"
@@ -305,16 +307,15 @@ public class ProyectoSuper25 {
                 final_de_lista = (i);
                 break;
             } 
-            
             System.out.print("#"+ (i+1) + "                    " + product_list[i] + "        Q" + price_list[i]);                                           // Mostramos los productos y precios
             System.out.println("");
         }
+        
         
         do{
             System.out.println("--> INGRESE COGIDO DEL PRODUCTO (DEL 1 AL " + final_de_lista + ")"); 
             String codigo_string = entrada.nextLine();
             int codigo_producto = parseInt(codigo_string);
-            
             
             if(codigo_producto < 1 || codigo_producto > final_de_lista){
                 System.out.println("ERROR ******* Ingrese codigo de producto valido");
@@ -330,7 +331,6 @@ public class ProyectoSuper25 {
                 productos_factura[contador_compra] = product_list[(codigo_producto - 1)];
                 contador_compra++;
                 
-                
                 System.out.println("¿Desea comprar otro producto?\n");
                 boolean seguir = preguntar_continuar(); 
                 
@@ -340,26 +340,90 @@ public class ProyectoSuper25 {
                     seguir_comprando = false;
                 }
             }
-           
         }while(seguir_comprando);
+        
         
         System.out.println("\n-----COMPRA FINALIZADA-----\n");
         System.out.println("Lista de subtotales\n");
         
-        
-        for (int i = 0; i < lista_tienda_final.length; i++) {                                           // Creamos ciclo que para mostrar los codigos y sus porcentajes
+        for (int i = 0; i < lista_tienda_final.length; i++) {                                           // Creamos ciclo que para mostrar mini version de factura
             if(product_list[i] != null){
             System.out.println(productos_factura[i] + " x " + lista_cantidad_compradas[i] + " = Q" + lista_sub_totales[i]);
             }
         }
         
-        
-        for(int subtotal : lista_sub_totales){
+        for(int subtotal : lista_sub_totales){                                                                  // Creamos ciclo "for" que itera la lista y suma los subtotales
             total_compra_sin_descuento += subtotal;
         }
         
+        System.out.println("\nEl total de la compra es de: \n" + "\nQ" + total_compra_sin_descuento + "\n");
         
-        System.out.println("\nEl total de la compra es de: \n" + total_compra_sin_descuento + "\n");
+        
+        boolean hay_cupon = existe_cupon();
+        if(hay_cupon){
+            boolean codigo_encontrado = false;
+            System.out.println("Cliente tiene cupon");
+            System.out.println("--> Ingrese codigo de descuento (Tiene que ser de 4 caracteres)");
+            String buscar_codigo = entrada2.nextLine();
+            System.out.println(buscar_codigo);
+            
+            
+            
+            for(var descuento : descuento_list){
+                if(descuento != null){
+                    if(descuento.equals(buscar_codigo)){
+                        codigo_encontrado = true;
+                        break;
+                    }
+                }
+            }
+            
+            
+            
+            if(codigo_encontrado){
+                System.out.println("CODIGO VALIDADO EXITOSAMENTE!!!");
+            }else{
+                System.out.println("CODIGO INCORRECTO, INTENTE DE NUEVO");
+            }
+            
+            
+            
+            
+            
+        }else{
+            System.out.println("Cliente no tiene cupon de descuento");
+            emitir_factura();
+        }
+        
+        
+        
+        
+        
+    }
+    
+    public static boolean existe_cupon(){
+        System.out.println("¿Tiene cupon de descuento?\n"
+                         + "1. Si\n"                                                
+                         + "2. No\n");
+        String tiene_cupon_string = entrada.next();
+        int tiene_cupon = parseInt(tiene_cupon_string);
+        boolean hay_cupon = false;
+        
+        if(tiene_cupon == 1){
+            hay_cupon =  true;
+        }else if(tiene_cupon == 2){
+            hay_cupon = false;
+        }else{
+            System.out.println("Opcion invalida, intente otra vez");
+            existe_cupon();
+        }
+        return hay_cupon;
+    }
+    
+    
+    
+    public static void emitir_factura(){
+        System.out.println("EMITIR FACTURA");
         
     }
 }
