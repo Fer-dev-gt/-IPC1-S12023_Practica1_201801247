@@ -1,15 +1,16 @@
 package proyectosuper25;
 import java.util.Scanner;
 import static java.lang.Integer.parseInt;
+
 /**
  * @author fernandoorozco
  */
 public class ProyectoSuper25 {
         static Scanner entrada = new Scanner(System.in);                  // Creamos objeto global "entrada" tipo Scanner 
         static Scanner entrada2 = new Scanner(System.in); 
+        
         static String[]product_list = new String[20];                           // Declaro lista de productos con 3 espacios, esta vacia por ahora
         static int[] price_list = new int[20];                                  // Declaro lista de precios de productos con 3 espacios, esta vacia por ahora
-        
         static String[] descuento_list = new String[20];                        // Creamos lista donde se guardaran los diferentes codigos 
         static int[] porcentaje_descuento = new int[20];                        // Creamos lista tipo "int" para los porcentajes de descuento
         
@@ -42,7 +43,7 @@ public class ProyectoSuper25 {
                            ***************************************
                            ********                       ********
                            ******** BIENVENIDO A SUPER 25 ********
-                           ********                       ********
+                           ********         🛍 🏬 🛍       ********
                            ***************************************
                            """);
         System.out.println("--> Ingrese número de opción a realizar:\n"
@@ -133,7 +134,7 @@ public class ProyectoSuper25 {
             contador++;                                                                                         // Si decide ingresar otro producto aumentamos el "contador" de iteraciones en 1
             
             if(seguir){
-                System.out.println("\n+++ REGISTRANDO NUEVO PRODUCTO +++\n");
+                System.out.println("\n\n+++ REGISTRANDO NUEVO PRODUCTO +++\n");
             }else{
                 agregar_nuevo_producto = false;
             }
@@ -155,19 +156,21 @@ public class ProyectoSuper25 {
         boolean seguir = true;
         System.out.println("1. Si\n"                                                // Le preguntamos al cajero si quiere ingresar otro producto"1. Si\n"
                          + "2. No");
-        String continuar_string = entrada.nextLine();                                                 // Guardamos respuesta
-        int continuar = parseInt(continuar_string);                                                   // La convertimos en tipo "int"
-        
-        
-        if (continuar == 1){                                                                                  // Validamos opcion "1"
-            seguir = true;
-        }else if(continuar == 2){
-            System.out.println("\nREGRESANDO A MENU PRINCIPAL\n");                                            // Validamos opcion "2"      
-            seguir = false;                                                                 // Cambiamos "agregar_nuevo_producto" a false, lo que terminara el ciclo principal
-        }else{
-            System.out.println("ERROR ***** Opcion invalida, ingrese datos nuevamente");                  // Si cajero no ingreso una opcion valida:
-            preguntar_continuar();                                                                     // Volvemos a preguntar usando recursividad
-        }
+        String continuar = entrada.nextLine();                                                 // Guardamos respuesta
+            switch (continuar) {
+                case "1":
+                    // Validamos opcion "1"
+                    seguir = true;
+                    break;
+                case "2":
+                    System.out.println("\nREGRESANDO A MENU PRINCIPAL\n");                                            // Validamos opcion "2"      
+                    seguir = false;                                                                 // Cambiamos "agregar_nuevo_producto" a false, lo que terminara el ciclo principal
+                    break;
+                default:
+                    System.out.println("\nERROR ***** Opcion invalida, ingrese datos nuevamente\n");                  // Si cajero no ingreso una opcion valida:
+                    preguntar_continuar();                                                                     // Volvemos a preguntar usando recursividad
+                    break;
+            }
         return seguir;
     }
     
@@ -212,7 +215,7 @@ public class ProyectoSuper25 {
                 for (int i = contador_descuento; i < product_list.length; i++) {                                  // Creamos ciclo secundarios para ingresar "codigo" y "porcentage" de descuento
                     descuento_list[i] = codigo;                                                                         // Guardamos "codigo" en la lista "descuento_list"
                     System.out.println("Código '" + descuento_list[i] + "' ingresado correctamente ✅\n");  
-                    System.out.println("--> Ingrese Porcentaje de Descuento del codigo '" + descuento_list[i] + "'");
+                    System.out.println("--> Ingrese Porcentaje de Descuento (Tiene que ser mayor a 0 y menor a 100)");
                     String porcentaje_string = entrada.nextLine();                                                      // Solicitamos que ingrese la cantidad del descuento del codigo
                     int porcentaje = parseInt(porcentaje_string);                                                     // Convertimos el dato a tipo "int"
                     
@@ -240,7 +243,7 @@ public class ProyectoSuper25 {
             
             
             if(seguir){
-                System.out.println("INGRESANDO NUEVO CUPON\n");
+                System.out.println("\n\n+++ INGRESANDO NUEVO CUPON +++");
             }else{
                 agregar_nuevo_descuento = false;
             }
@@ -259,28 +262,32 @@ public class ProyectoSuper25 {
     
     
     public static void make_sale(){
-        System.out.println("\n--------REALIZAR VENTAS--------\n");
+        System.out.println("\n--------REALIZAR VENTA--------\n");
         System.out.println("--> Ingrese nombre del cliente: ");
         String nombre_cliente = entrada.nextLine();
+        String nit_del_cliente = "";
         System.out.println("\n¿" + nombre_cliente + " tiene NIT?\n"
                             + "1. Si\n"
                             + "2. No");
-        String nit_string = entrada.nextLine();
-        int tiene_nit = parseInt(nit_string);
+        String tiene_nit = entrada.nextLine();
         
-        if (tiene_nit == 1){
-            System.out.println("\n--> Ingrese NIT de '" + nombre_cliente + "'");
-            String nit_del_cliente = entrada.nextLine();
-            System.out.println("\nNIT de '" + nombre_cliente + "' registrado como: " + nit_del_cliente);
-            hacer_pedido(nombre_cliente);                                                                                         // Invoco a funcion 
-        }else if(tiene_nit == 2){
-            nit_string = "C/F";
-            System.out.println("NIT del cliente: " + nombre_cliente + " quedo como: " + nit_string);
-            hacer_pedido(nombre_cliente);                                                                                         // Invoco a funcion
-        }else{
-            System.out.println("ERROR ***** Opcion invalida, ingrese datos nuevamente");
-            make_sale();                                                                                            // Use recursividad
-        }
+            switch (tiene_nit) {
+                case "1":
+                    System.out.println("\n--> Ingrese NIT de '" + nombre_cliente + "'");
+                    nit_del_cliente = entrada.nextLine();
+                    System.out.println("\nNIT de '" + nombre_cliente + "' registrado como: " + nit_del_cliente);
+                    hacer_pedido(nombre_cliente, nit_del_cliente);                                                                                         // Invoco a funcion 
+                    break;
+                case "2":
+                    nit_del_cliente = "C/F";
+                    System.out.println("\nNIT del cliente: " + nombre_cliente + " quedo como: " + nit_del_cliente);
+                    hacer_pedido(nombre_cliente, nit_del_cliente);                                                                                         // Invoco a funcion
+                    break;
+                default:
+                    System.out.println("ERROR ***** Opcion invalida, ingrese datos nuevamente");
+                    make_sale();                                                                                            // Use recursividad
+                    break;
+            }
     }
     
     
@@ -289,11 +296,12 @@ public class ProyectoSuper25 {
     }
     
     
-    public static void hacer_pedido(String nombre_cliente){
+    public static void hacer_pedido(String nombre_cliente, String nit_del_cliente){
         System.out.println("\n-----PRODUCTOS DISPONIBLES PARA VENDER------\n");
-        System.out.println("\nCODIGO DE PRODUCTO    PRODUCTO    PRECIO");
+        System.out.println("CODIGO DE PRODUCTO    PRODUCTO    PRECIO");
         int[] lista_sub_totales = new int[20]; 
         int[] lista_cantidad_compradas = new int [20];
+        int[] precio_por_producto = new int[20];
         String[] productos_factura = new String [20];
         int final_de_lista = 0;
         int total_compra_sin_descuento = 0;
@@ -305,7 +313,7 @@ public class ProyectoSuper25 {
         
         for (int i = 0; i < product_list.length; i++) {                                                   // Creamos ciclo que muestra los productos y sus precios
             if(product_list[i] == null){
-                System.out.println("\n-----FIN DE PRODUCTOS DISPONIBLES (los demas espacios en lista son 'null')\n");
+                System.out.println("\n------FIN DE PRODUCTOS DISPONIBLES------\n(Los demas espacios en lista son 'null')\n");
                 final_de_lista = (i);
                 break;
             } 
@@ -323,21 +331,23 @@ public class ProyectoSuper25 {
                 System.out.println("ERROR ******* Ingrese codigo de producto valido");
                 continue;
             }else{
-                System.out.println("\n¿Cuantos articulos de '" + product_list[(codigo_producto - 1)] + "' desea comprar?");
+                System.out.println("\n¿Cuantos unidades de '" + product_list[(codigo_producto - 1)] + "' desea comprar?");
                 String cantidad_producto_string = entrada.nextLine();
                 int cantidad_producto = parseInt(cantidad_producto_string);
-                System.out.println("\n****** SE COMPRARON " + cantidad_producto + " ARTICULOS DE '" + product_list[(codigo_producto - 1)] + "' *****\n");
+                System.out.println("\n****** SE COMPRARON " + cantidad_producto + " UNIDADES DE '" + product_list[(codigo_producto - 1)] + "' *****\n");
                 
                 lista_cantidad_compradas[contador_compra] = cantidad_producto;
                 lista_sub_totales[contador_compra] = cantidad_producto * price_list[codigo_producto - 1];
                 productos_factura[contador_compra] = product_list[(codigo_producto - 1)];
+                precio_por_producto[contador_compra] = price_list[codigo_producto - 1];
+                
                 contador_compra++;
                 
                 System.out.println("¿Desea comprar otro producto?\n");
                 boolean seguir = preguntar_continuar(); 
                 
                 if(seguir){
-                    System.out.println("COMPRANDO NUEVO PRODUCTO\n");
+                    System.out.println("\nCOMPRANDO NUEVO PRODUCTO\n");
                 }else{
                     seguir_comprando = false;
                 }
@@ -349,7 +359,7 @@ public class ProyectoSuper25 {
         System.out.println("Lista de subtotales\n");
         
         for (int i = 0; i < product_list.length; i++) {                                           // Creamos ciclo que para mostrar mini version de factura
-            if(product_list[i] != null){
+            if(productos_factura[i] != null){
             System.out.println(productos_factura[i] + " x " + lista_cantidad_compradas[i] + " = Q" + lista_sub_totales[i]);
             }
         }
@@ -358,7 +368,7 @@ public class ProyectoSuper25 {
             total_compra_sin_descuento += subtotal;
         }
         
-        System.out.println("\nEl total de la compra es de: \n" + "\nQ" + total_compra_sin_descuento + "\n");
+        System.out.println("\nSubtotal de compra es: \n" + "\nQ" + total_compra_sin_descuento + "\n");
         
         
         boolean hay_cupon = existe_cupon();
@@ -371,7 +381,7 @@ public class ProyectoSuper25 {
                 String buscar_codigo = entrada2.nextLine();
 
                 
-                for(var descuento : descuento_list){
+                for(String descuento : descuento_list){
                     index_descuento++;
                     if(descuento != null){
                         if(descuento.equals(buscar_codigo)){
@@ -387,7 +397,7 @@ public class ProyectoSuper25 {
                     System.out.println("\n¡¡¡ 🎉 🎉 🎉 CODIGO VALIDADO EXITOSAMENTE 🎉 🎉 🎉!!!\n");
                     break;
                 }else{
-                    System.out.println("CODIGO INCORRECTO, INTENTE DE NUEVO");
+                    System.out.println("\nCODIGO INCORRECTO, INTENTE DE NUEVO\n");
                     continue;
                 }
                 
@@ -396,10 +406,11 @@ public class ProyectoSuper25 {
             double total_compra_con_descuento = total_compra_sin_descuento - (total_compra_sin_descuento * ( (double) descuento_aplicado / 100));
             
             System.out.println("\nSE HACE DESCUENTO  DEl " + descuento_aplicado + "%\n");
-            emitir_factura(total_compra_con_descuento);
+            emitir_factura(total_compra_con_descuento, nombre_cliente, nit_del_cliente, lista_cantidad_compradas, lista_sub_totales, productos_factura, precio_por_producto, total_compra_sin_descuento, descuento_aplicado);
         }else{
             System.out.println("Cliente no tiene cupon de descuento");
-            emitir_factura(total_compra_sin_descuento);
+            int no_tiene_descuento = 0;
+            emitir_factura(total_compra_sin_descuento, nombre_cliente, nit_del_cliente, lista_cantidad_compradas, lista_sub_totales, productos_factura, precio_por_producto, total_compra_sin_descuento, no_tiene_descuento);
         }
         
         
@@ -429,9 +440,47 @@ public class ProyectoSuper25 {
     
     
     
-    public static void emitir_factura(double total_a_pagar){
-        System.out.println("\n************ FACTURA ************\n");
-        System.out.println("Total a pagar: " + total_a_pagar);
+    public static void emitir_factura(double total_a_pagar, String nombre_cliente, String nit_del_cliente, int[]lista_cantidad_compradas, int[]lista_sub_totales, String[]productos_factura, int[]precio_por_producto, int total_compra_sin_descuento, int descuento_aplicado){
+        String total_a_pagar_2_decimales = String.format("%.2f", total_a_pagar);
+        System.out.println("\n*************** FACTURA ***************\n");
+        System.out.println("""
+                           
+                           *****************************************
+                           *********                       *********
+                           *********   SUPER 25  🛍 🏬 🛍   *********
+                           *********                       *********
+                           *****************************************
+                           """);
+        
+        System.out.println("Nombre del cajero:  Fernando Orozco\n");
+        System.out.println("Nombre del cliente: " + nombre_cliente);
+        System.out.println("\nNit de '" + nombre_cliente + "' es: " + nit_del_cliente);
+        System.out.println("\nFecha de compra: 10/2/2023   17:53 (GMT -6)\n\n\n");
+        
+        
+        for (int i = 0; i < product_list.length; i++) {                                           // Creamos ciclo que para mostrar mini version de factura
+            if(productos_factura[i] != null){
+            System.out.println("(" + productos_factura[i] + ", Precio x Unidad: Q"+ precio_por_producto[i] + ") x " + lista_cantidad_compradas[i] + " = Q" + lista_sub_totales[i]);
+            }
+        }
+        
+        System.out.println("------------------------------------------");
+        System.out.println("SUBTOTAL:                            Q" + total_compra_sin_descuento);
+        
+        if(descuento_aplicado > 0){
+            System.out.println("\nDescuento aplicado de:           " + descuento_aplicado + "%");
+        }else{
+            System.out.println("\nCliente no tiene descuento");
+        }
+        
+        System.out.println("\nTotal a pagar: Q" + total_a_pagar_2_decimales);
+                                
+        
+        System.out.println("\n\n\n\n\n\n\n\n\n\n\nREGRESANDO A MENU PRINCIPAL\n"); 
+        menu_principal();  
+        
+        
+        
         
     }
 }
