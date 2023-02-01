@@ -297,7 +297,10 @@ public class ProyectoSuper25 {
         String[] productos_factura = new String [20];
         int final_de_lista = 0;
         int total_compra_sin_descuento = 0;
+        int total_compra_con_descuento = 0;
         int contador_compra = 0;
+        int index_descuento = -1;
+        int descuento_aplicado = 0;
         boolean seguir_comprando = true;
         
         
@@ -360,39 +363,46 @@ public class ProyectoSuper25 {
         
         
         boolean hay_cupon = existe_cupon();
+        boolean seguir_pidiendo_cupon = true;
         if(hay_cupon){
-            boolean codigo_encontrado = false;
             System.out.println("Cliente tiene cupon");
-            System.out.println("--> Ingrese codigo de descuento (Tiene que ser de 4 caracteres)");
-            String buscar_codigo = entrada2.nextLine();
-            System.out.println(buscar_codigo);
-            
-            
-            
-            for(var descuento : descuento_list){
-                if(descuento != null){
-                    if(descuento.equals(buscar_codigo)){
-                        codigo_encontrado = true;
-                        break;
+            do{
+                boolean codigo_encontrado = false;
+                System.out.println("--> Ingrese codigo de descuento (Tiene que ser de 4 caracteres)");
+                String buscar_codigo = entrada2.nextLine();
+                System.out.println(buscar_codigo);
+                
+                
+                for(var descuento : descuento_list){
+                    index_descuento++;
+                    if(descuento != null){
+                        if(descuento.equals(buscar_codigo)){
+                            codigo_encontrado = true;
+                            descuento_aplicado = porcentaje_descuento[index_descuento];
+                            break;
+                        }
                     }
                 }
-            }
+                
+                
+                if(codigo_encontrado){
+                    System.out.println("CODIGO VALIDADO EXITOSAMENTE!!!");
+                    System.out.println("DESCUENTO VA SERA DE: " + descuento_aplicado + "%");
+                    break;
+                }else{
+                    System.out.println("CODIGO INCORRECTO, INTENTE DE NUEVO");
+                    continue;
+                }
+                
+            }while(seguir_pidiendo_cupon);
             
+            total_compra_con_descuento = (int) ((double) total_compra_sin_descuento - (total_compra_sin_descuento * (descuento_aplicado / 100)));
             
-            
-            if(codigo_encontrado){
-                System.out.println("CODIGO VALIDADO EXITOSAMENTE!!!");
-            }else{
-                System.out.println("CODIGO INCORRECTO, INTENTE DE NUEVO");
-            }
-            
-            
-            
-            
-            
+            System.out.println(total_compra_sin_descuento + " SE HACE DESCUENTO  " + total_compra_con_descuento);
+            emitir_factura(total_compra_con_descuento);
         }else{
             System.out.println("Cliente no tiene cupon de descuento");
-            emitir_factura();
+            emitir_factura(total_compra_sin_descuento);
         }
         
         
@@ -422,8 +432,9 @@ public class ProyectoSuper25 {
     
     
     
-    public static void emitir_factura(){
-        System.out.println("EMITIR FACTURA");
+    public static void emitir_factura(int total_a_pagar){
+        System.out.println("************ FACTURA ************");
+        System.out.println("Total a pagar: " + total_a_pagar);
         
     }
 }
