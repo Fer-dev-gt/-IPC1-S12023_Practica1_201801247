@@ -152,29 +152,6 @@ public class ProyectoSuper25 {
     }                                                                                                           // Fin metodo addNewProduct()
     
     
-    public static boolean preguntar_continuar(){
-        boolean seguir = true;
-        System.out.println("1. Si\n"                                                // Le preguntamos al cajero si quiere ingresar otro producto"1. Si\n"
-                         + "2. No");
-        String continuar = entrada.nextLine();                                                 // Guardamos respuesta
-            switch (continuar) {
-                case "1":
-                    // Validamos opcion "1"
-                    seguir = true;
-                    break;
-                case "2":
-                    System.out.println("\nREGRESANDO A MENU PRINCIPAL\n");                                            // Validamos opcion "2"      
-                    seguir = false;                                                                 // Cambiamos "agregar_nuevo_producto" a false, lo que terminara el ciclo principal
-                    break;
-                default:
-                    System.out.println("\nERROR ***** Opcion invalida, ingrese datos nuevamente\n");                  // Si cajero no ingreso una opcion valida:
-                    preguntar_continuar();                                                                     // Volvemos a preguntar usando recursividad
-                    break;
-            }
-        return seguir;
-    }
-    
-    
     public static void add_discount_coupon(){
         System.out.println("\n-------REGRISTAR CÓDIGOS DE DESCUENTO--------\n");
         System.out.println("Limite de codigos que se pueden registrar: 20");
@@ -288,11 +265,6 @@ public class ProyectoSuper25 {
                     make_sale();                                                                                            // Use recursividad
                     break;
             }
-    }
-    
-    
-    public static void make_report(){
-         System.out.println("opcion 4");
     }
     
     
@@ -419,25 +391,10 @@ public class ProyectoSuper25 {
         
     }
     
-    public static boolean existe_cupon(){
-        System.out.println("¿Tiene cupon de descuento?\n"
-                         + "1. Si\n"                                                
-                         + "2. No");
-        String tiene_cupon_string = entrada.next();
-        int tiene_cupon = parseInt(tiene_cupon_string);
-        boolean hay_cupon = false;
-        
-        if(tiene_cupon == 1){
-            hay_cupon =  true;
-        }else if(tiene_cupon == 2){
-            hay_cupon = false;
-        }else{
-            System.out.println("Opcion invalida, intente otra vez");
-            existe_cupon();
-        }
-        return hay_cupon;
-    }
     
+    public static void make_report(){
+         System.out.println("opcion 4");
+    }
     
     
     public static void emitir_factura(double total_a_pagar, String nombre_cliente, String nit_del_cliente, int[]lista_cantidad_compradas, int[]lista_sub_totales, String[]productos_factura, int[]precio_por_producto, int total_compra_sin_descuento, int descuento_aplicado){
@@ -483,5 +440,49 @@ public class ProyectoSuper25 {
         
         
     }
+    
+    
+    public static boolean preguntar_continuar(){
+        boolean seguir = true;
+        System.out.println("1. Si\n"                                                // Le preguntamos al cajero si quiere ingresar otro producto"1. Si\n"
+                         + "2. No");
+        String continuar = entrada.nextLine();                                                 // Guardamos respuesta
+            switch (continuar) {
+                case "1":
+                    // Validamos opcion "1"
+                    seguir = true;
+                    break;
+                case "2":
+                    System.out.println("\nREGRESANDO A MENU PRINCIPAL\n");                                            // Validamos opcion "2"      
+                    seguir = false;                                                                 // Cambiamos "agregar_nuevo_producto" a false, lo que terminara el ciclo principal
+                    break;
+                default:
+                    System.out.println("\nERROR ***** Opcion invalida, ingrese datos nuevamente\n");                  // Si cajero no ingreso una opcion valida:
+                    preguntar_continuar();                                                                     // Volvemos a preguntar usando recursividad
+                    break;
+            }
+        return seguir;
+    }
+    
+    
+    public static boolean existe_cupon(){
+        System.out.println("¿Tiene cupon de descuento?\n"
+                         + "1. Si\n"                                                
+                         + "2. No");
+        String tiene_cupon_string = entrada.next();
+        int tiene_cupon = parseInt(tiene_cupon_string);
+        boolean hay_cupon = false;
+        
+        if(tiene_cupon == 1){
+            hay_cupon =  true;
+        }else if(tiene_cupon == 2){
+            hay_cupon = false;
+        }else{
+            System.out.println("Opcion invalida, intente otra vez");
+            existe_cupon();
+        }
+        return hay_cupon;
+    }
+
 }
                                                                                                                    // Fin "class ProyectSuper25"
