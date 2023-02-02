@@ -1,6 +1,7 @@
 package proyectosuper25;
 import java.util.Scanner;
 import static java.lang.Integer.parseInt;
+import java.util.Arrays;
 
 /**
  * @author fernandoorozco
@@ -13,6 +14,9 @@ public class ProyectoSuper25 {
         static int[] price_list = new int[20];                                              // Declaro lista de precios de productos con 3 espacios, esta vacia por ahora
         static String[] descuento_list = new String[20];                                    // Creamos lista donde se guardaran los diferentes codigos 
         static int[] porcentaje_descuento = new int[20];                                    // Creamos lista tipo "int" para los porcentajes de descuento
+        
+        static String[] productos_factura = new String [20];
+        static int[] lista_cantidad_compradas = new int [20];
         
         static int contador_producto = 0;                                                   // Lleva el conteo de cuantos productos has sido ingresados exitosamente
         static int contador_descuento = 0;                                                  // Lleva el conteo de cuantos codigos de descuento has sido ingresados exitosamente
@@ -115,7 +119,7 @@ public class ProyectoSuper25 {
                     
                     if(precio > 0){                                                                                     // Revisamos que el producto no sea negativo
                         price_list[i] = precio;                                                                         // Lo agregamos a la lista "price_list"
-                        System.out.println("\nPrecio de '" + product_list[i] + "' registrado a: Q" + price_list[i]);                                  
+                        System.out.println("\nPrecio de '" + product_list[i] + "' registrado a: Q" + price_list[i] + " ✅");                                  
                         break;                                                                                          // Salimos de este ciclo
                     }else{                                                                                              // Si el precio es negativo, entonces:
                         System.out.println("Precio no puede ser negativo, ingrese producto de nuevo");          
@@ -167,7 +171,7 @@ public class ProyectoSuper25 {
             System.out.println("\n--> Ingrese código de descuento: (4 caracteres)");  
             String codigo = entrada.nextLine();                                                                 // Lo guardamos en variable "codigo"
             int longitud_codigo = codigo.length();                                                              // Guardamos la longitud de la palabra adentro de "codigo"
-            System.out.print("\nCodigo '" + codigo + "' es de " + longitud_codigo + " caracteres. ");           // Mostramos la longitud del codigo
+            System.out.println("\nCodigo '" + codigo + "' es de " + longitud_codigo + " caracteres. ");           // Mostramos la longitud del codigo
             
             
             if(longitud_codigo != 4){                                                                           // Verificamos que el codigo sea exactamente de 4 digitos
@@ -194,14 +198,14 @@ public class ProyectoSuper25 {
             }else{
                 for (int i = contador_descuento; i < product_list.length; i++) {                                                                    // Creamos ciclo secundarios para ingresar "codigo" y "porcentage" de descuento
                     descuento_list[i] = codigo;                                                                                                     // Guardamos "codigo" en la lista "descuento_list"
-                    System.out.println("Código '" + descuento_list[i] + "' ingresado correctamente ✅\n");  
-                    System.out.println("--> Ingrese Porcentaje de Descuento (Tiene que ser mayor a 0 y menor a 100)");
+                    System.out.println("\n--> Ingrese Porcentaje de Descuento (Tiene que ser mayor a 0 y menor a 100)");
                     String porcentaje_string = entrada.nextLine();                                                                                  // Solicitamos que ingrese la cantidad del descuento del codigo
                     int porcentaje = parseInt(porcentaje_string);                                                                                 // Convertimos el dato a tipo "int"
                     
                     if(porcentaje > 0 && porcentaje < 100){                                                                                         // Verificamos que porcentaje este en el rango de [1,99]
                         porcentaje_descuento[i] = porcentaje;                                                                                       // Guardamos "porcentaje" en lista "porcentaje_descuento"
-                        System.out.println("\nCódigo '" + descuento_list[i] + "' representa un "+ porcentaje_descuento[i]+ "% de Descuento\n");
+                        System.out.println("\nCódigo '" + descuento_list[i] + "' ingresado correctamente ✅\n");
+                        System.out.println("Código '" + descuento_list[i] + "' representa un "+ porcentaje_descuento[i]+ "% de Descuento\n");
                         break;                                                                                                                      // Salimos de ciclo secundario
                     }else{
                         System.out.println("ERROR ****** NO SE ACEPTAN NUMEROS NEGATIVOS O MAYORES DE 100%, INGRESE CODIGO DE NUEVO");
@@ -275,9 +279,7 @@ public class ProyectoSuper25 {
         System.out.println("\n-----PRODUCTOS DISPONIBLES PARA VENDER------\n");
         System.out.println("CODIGO DE PRODUCTO    PRODUCTO    PRECIO");
         
-        String[] productos_factura = new String [20];
         int[] lista_sub_totales = new int[20]; 
-        int[] lista_cantidad_compradas = new int [20];
         int[] precio_por_producto = new int[20];
         int final_de_lista = 0;
         int total_compra_sin_descuento = 0;
@@ -385,7 +387,7 @@ public class ProyectoSuper25 {
             System.out.println("\nSE HACE DESCUENTO  DEl " + descuento_aplicado + "%\n");
             emitir_factura(total_compra_con_descuento, nombre_cliente, nit_del_cliente, lista_cantidad_compradas, lista_sub_totales, productos_factura, precio_por_producto, total_compra_sin_descuento, descuento_aplicado);
         }else{
-            System.out.println("Cliente no tiene cupon de descuento");
+            System.out.println("\nCliente no tiene cupon de descuento");
             int no_tiene_descuento = 0;
             emitir_factura(total_compra_sin_descuento, nombre_cliente, nit_del_cliente, lista_cantidad_compradas, lista_sub_totales, productos_factura, precio_por_producto, total_compra_sin_descuento, no_tiene_descuento);
         }
@@ -408,7 +410,7 @@ public class ProyectoSuper25 {
         System.out.println("Nombre del cliente: " + nombre_cliente);
         System.out.println("\nNit de '" + nombre_cliente + "' es: " + nit_del_cliente);
         System.out.println("\nFecha de compra: 10/2/2023   17:53 (GMT -6)\n\n\n");
-        System.out.println("------------------------------------------");
+        System.out.println("-------------------------------------------");
         
         
         for (int i = 0; i < product_list.length; i++) {                                                                  // Creamos ciclo que para mostrar mini version de factura
@@ -417,16 +419,17 @@ public class ProyectoSuper25 {
             }
         }
         
-        System.out.println("------------------------------------------");
-        System.out.println("SUBTOTAL:                                 Q" + total_compra_sin_descuento);
+        System.out.println("-------------------------------------------");
+        System.out.println("SUBTOTAL:                               Q" + total_compra_sin_descuento);
         
         if(descuento_aplicado > 0){
-            System.out.println("\nDescuento aplicado de:           " + descuento_aplicado + "%");
+            System.out.println("\nDescuento aplicado de:                  " + descuento_aplicado + "%");
         }else{
             System.out.println("\nCliente no tiene descuento");
         }
-        
-        System.out.println("\nTotal a pagar: Q" + total_a_pagar_2_decimales);
+        System.out.println("\n\n-------------------------------------------");
+        System.out.println("Total a pagar: Q" + total_a_pagar_2_decimales);
+        System.out.println("-------------------------------------------\n\n");
         
         System.out.println("\n¿Desea regresar a Menu Principal? (Opcion 2 TERMINA EL PROGRAMA)");
         
@@ -444,7 +447,36 @@ public class ProyectoSuper25 {
     
     
     public static void make_report(){
-         System.out.println("opcion 4");
+        int variable_temporal;
+        String variable_temporal_producto;
+        
+        System.out.println("\n\n-------------REPORTE DE VENTAS-------------\n\n");
+        System.out.println("   PRODUCTOS MAS VENDIDOS HOY DE LA TIENDA ");
+        System.out.println("\n\n-------------------------------------------");
+        
+        
+        
+        for (int i = 0; i < lista_cantidad_compradas.length - 1; i++) {
+           for (int j = i + 1; j < lista_cantidad_compradas.length; j++) {
+              if (lista_cantidad_compradas[i] < lista_cantidad_compradas[j]) {
+                 variable_temporal = lista_cantidad_compradas[i];
+                 variable_temporal_producto = productos_factura[i];
+                 lista_cantidad_compradas[i] = lista_cantidad_compradas[j];
+                 productos_factura[i] = productos_factura[j];
+                 lista_cantidad_compradas[j] = variable_temporal;
+                 productos_factura[j] = variable_temporal_producto;
+              }
+           }
+        }
+        
+        System.out.println("Producto          Cantidad");
+        for (int i = 0; i < lista_cantidad_compradas.length; i++) {
+            if(lista_cantidad_compradas[i] != 0){
+                System.out.println(productos_factura[i] + "           " + lista_cantidad_compradas[i] + " ");
+            }
+        }
+        
+        System.exit(0);
     }
     
     
@@ -475,18 +507,21 @@ public class ProyectoSuper25 {
         System.out.println("¿Tiene cupon de descuento?\n"
                          + "1. Si\n"                                                
                          + "2. No");
-        String tiene_cupon_string = entrada.next();
-        int tiene_cupon = parseInt(tiene_cupon_string);
+        String tiene_cupon = entrada.next();
         boolean hay_cupon = false;
         
-        if(tiene_cupon == 1){
-            hay_cupon =  true;
-        }else if(tiene_cupon == 2){
-            hay_cupon = false;
-        }else{
-            System.out.println("Opcion invalida, intente otra vez");
-            existe_cupon();
-        }
+            switch (tiene_cupon) {
+                case "1":
+                    hay_cupon =  true;
+                    break;
+                case "2":
+                    hay_cupon = false;
+                    break;
+                default:
+                    System.out.println("Opcion invalida, intente otra vez");
+                    existe_cupon();
+                    break;
+            }
         return hay_cupon;
     }
 
