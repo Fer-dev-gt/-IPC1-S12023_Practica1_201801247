@@ -92,17 +92,15 @@ public class ProyectoSuper25 {
             System.out.println("--> Ingrese nombre del producto:");  
             String product_name = entrada.nextLine();                                                                   // Guardamos producto en variable "product_name"
             
-            
             for (int i = 0; i < product_list.length; i++) {                                                              // Creamos ciclo secundario que itera dentro de lista "product_list", "product_list.length" es igual a 20
                 if(product_list[i] != null){                                                                             // Verificamos que los valores existenentes no sean "null"
-                    if(product_list[i].equals(product_name)){                                                    // Revisamos que "product_name" no se encuentre en lista "product_list"
-                        ya_ingresado = true;                                                                            // Si ya existe en lista, cambiamos "ya_ingresado" a "true"
+                    if(product_list[i].equals(product_name)){                                                     // Revisamos que "product_name" no se encuentre en lista "product_list"
+                        ya_ingresado = true;                                                                             // Si ya existe en lista, cambiamos "ya_ingresado" a "true"
                         System.out.println("\n❌ Producto '" + product_name + "'  ya se registro en la lista ❌\n");                          
-                        break;                                                                                          // Salimos de este ciclo
+                        break;                                                                                           // Salimos de este ciclo
                     }
                 }
             }
-            
             
             if (ya_ingresado) {                                                                                                 // Verificamos si ya existe el producto en la lista
                 continue;                                                                                                       // Ignoramos las demas instrucciones y volvemos al inicio del ciclo principal
@@ -119,25 +117,22 @@ public class ProyectoSuper25 {
                         System.out.println("\n✅ Precio de '" + product_list[i] + "' registrado a: Q" + price_list[i] + " ✅");                                  
                         break;                                                                                                  // Salimos de este ciclo
                     }else{                                                                                                      // Si el precio es negativo, entonces:
-                        System.out.println("❌ Precio no puede ser negativo, ingrese producto de nuevo ❌");          
-                        continue;                                                                                               // Regresamos al inicio de este ciclo
+                        System.out.println("❌ Precio no puede ser negativo, ingrese producto de nuevo ❌");                   // Regresamos al inicio de este ciclo
                     }
                 }
             }
             
-          
             contador_producto++;                                                                                // Al ingresar correctamente un nuevo producto aumentamos "contador_producto" en 1
             if(contador_producto > 19){                                                                         // Vericamos que no hayan mas de 20 productos registrados
                 System.out.println("LIMITE DE LISTA ALCANZADO");
                 break;                                                                                          // Salimos del ciclo principal "do-while"
             }
             
-            
             System.out.println("\n¿Desea agregar otro producto?");                                            // Le preguntamos al cajero si quiere ingresar otro producto
             boolean seguir = preguntar_continuar();                                                             // Invocamos funcion que pregunta al usuario si quiere ingresar otro producto
             contador++;                                                                                         // Si decide ingresar otro producto aumentamos el "contador" de iteraciones en 1
             
-            
+
             if(seguir){
                 System.out.println("\n\n+++ REGISTRANDO NUEVO PRODUCTO +++\n");
             }else{
@@ -205,8 +200,7 @@ public class ProyectoSuper25 {
                         System.out.println("Código '" + descuento_list[i] + "' representa un "+ porcentaje_descuento[i]+ "% de Descuento\n");
                         break;                                                                                                                      // Salimos de ciclo secundario
                     }else{
-                        System.out.println("\n❌ ERROR: NO SE ACEPTAN NUMEROS NEGATIVOS O MAYORES DE 100%, INGRESE CODIGO DE NUEVO ❌");
-                            continue;                                                                                                               // Regresamos al inicio del ciclo principal
+                        System.out.println("\n❌ ERROR: NO SE ACEPTAN NUMEROS NEGATIVOS O MAYORES DE 100%, INGRESE CODIGO DE NUEVO ❌");          // Regresamos al inicio del ciclo principal
                     }
                 }
             }
@@ -301,7 +295,6 @@ public class ProyectoSuper25 {
             
             if(codigo_producto < 1 || codigo_producto > final_de_lista){                                                                    // Evaluamos si el cliente ingreso un dato no válido
                 System.out.println("\n❌ ERROR: Ingrese codigo de producto valido ❌\n");
-                continue;
             }else{
                 System.out.println("\n¿Cuantos unidades de '" + product_list[(codigo_producto - 1)] + "' desea comprar?");                              // Le preguntamos cuantas unidades del producto seleccionado desea comprar
                 String cantidad_producto_string = entrada.nextLine();
@@ -370,8 +363,7 @@ public class ProyectoSuper25 {
                     System.out.println("\n¡¡¡ 🎉 🎉 🎉 CODIGO VALIDADO EXITOSAMENTE 🎉 🎉 🎉!!!\n");                            // Felicitamos al cliente
                     break;
                 }else{
-                    System.out.println("\n❌ CODIGO INCORRECTO, INTENTE DE NUEVO ❌\n");                                      // Le decimos que su codigo no se encuentra en nuestra lista
-                    continue;                                                                                                   // Regresamos al inicio del ciclo "do-while"
+                    System.out.println("\n❌ CODIGO INCORRECTO, INTENTE DE NUEVO ❌\n");                                      // Le decimos que su codigo no se encuentra en nuestra lista y regresamos al inicio del ciclo "do-while"
                 }
                 
             }while(seguir_pidiendo_cupon);                                                                                      // Verificamos si tenemos que seguir pidiendo el cupon
@@ -436,22 +428,22 @@ public class ProyectoSuper25 {
         System.out.println("\n\n-------------REPORTE DE VENTAS-------------\n\n");
         System.out.println("  PRODUCTOS MAS VENDIDOS HOY DE LA TIENDA ");
         System.out.println("\n\n-------------------------------------------");
-                                                                                                    // Para ordenar las listas usamos el "Método de ordenamiento de burbuja"
-        for (int i = 0; i < lista_cantidad_compradas.length - 1; i++) {                             // Ciclo "for" principal, itera para ordenar los valores de la lista
-           for (int j = i + 1; j < lista_cantidad_compradas.length; j++) {                          // Ciclo "for" secundario, se encarga de compara todos los elementos dentro de las listas
-              if (lista_cantidad_compradas[i] < lista_cantidad_compradas[j]) {                      // Si el valor de la izquierda es mayor al de la derechas, se necesita ordenar
-                 variable_temporal = lista_cantidad_compradas[i];                                   // Guardamos el valor de la izquierda en una variable temporal
-                 variable_temporal_producto = productos_factura[i];                                 // Guardamos el valor de la izquierda en una variable temporal
-                 lista_cantidad_compradas[i] = lista_cantidad_compradas[j];                         // Intercambiamos el valor de la derecha y los pasamos a la izquierda
-                 productos_factura[i] = productos_factura[j];                                       // Intercambiamos el valor de la derecha y los pasamos a la izquierda
-                 lista_cantidad_compradas[j] = variable_temporal;                                   // El valor de la izquierda lo pasamos a la derecha usando la variable temporal
-                 productos_factura[j] = variable_temporal_producto;                                 // El valor de la izquierda lo pasamos a la derecha usando la variable temporal
+                                                                                                                    // Para ordenar las listas usamos el "Método de ordenamiento de burbuja"
+        for (int i = 0; i < lista_cantidad_compradas.length - 1; i++) {                                             // Ciclo "for" principal, itera para ordenar los valores de la lista
+           for (int j = i + 1; j < lista_cantidad_compradas.length; j++) {                                          // Ciclo "for" secundario, se encarga de compara todos los elementos dentro de las listas
+              if (lista_cantidad_compradas[i] < lista_cantidad_compradas[j]) {                                      // Si el valor de la izquierda es mayor al de la derechas, se necesita ordenar
+                 variable_temporal = lista_cantidad_compradas[i];                                                   // Guardamos el valor de la izquierda en una variable temporal
+                 variable_temporal_producto = productos_factura[i];                                                 // Guardamos el valor de la izquierda en una variable temporal
+                 lista_cantidad_compradas[i] = lista_cantidad_compradas[j];                                         // Intercambiamos el valor de la derecha y los pasamos a la izquierda
+                 productos_factura[i] = productos_factura[j];                                                       // Intercambiamos el valor de la derecha y los pasamos a la izquierda
+                 lista_cantidad_compradas[j] = variable_temporal;                                                   // El valor de la izquierda lo pasamos a la derecha usando la variable temporal
+                 productos_factura[j] = variable_temporal_producto;                                                 // El valor de la izquierda lo pasamos a la derecha usando la variable temporal
               }
            }
         }
-                                                                                                    // Mostramos la lista de productos mas vendidos
+                                                                                                                    // Mostramos la lista de productos mas vendidos
         System.out.println("Producto       Cantidad\n");                                            
-        for (int i = 0; i < lista_cantidad_compradas.length; i++) {                                 // Cremos ciclo "for" para imprimis todos los valores de nuestras nuevas listas ordenadas
+        for (int i = 0; i < lista_cantidad_compradas.length; i++) {                                                 // Cremos ciclo "for" para imprimis todos los valores de nuestras nuevas listas ordenadas
             if(lista_cantidad_compradas[i] != 0){
                 System.out.println(productos_factura[i] + "           " + lista_cantidad_compradas[i] + " ");       // Mostramos los valores de la lista
             }
@@ -505,6 +497,4 @@ public class ProyectoSuper25 {
             }
         return hay_cupon;
     }
-
 }
-                                                                                                                 
