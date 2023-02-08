@@ -29,7 +29,7 @@ public class ProyectoSuper25 {
             System.out.println("--> Ingrese Contraseña: ");
             String password = entrada2.nextLine();                                              // Ingresamos "password"
             
-            if(user.equals("a") && password.equals("a")){                        // Verificamos que usuario y contraseña sean correctos
+            if(user.equals("cajero_201801247") && password.equals("ipc1_201801247")){ // Verificamos que usuario y contraseña sean correctos
                 menu_principal();                                                               // Abrimos menu principal
             }else{
                 System.out.println("\n❌ CREDENCIALES INCORRECTAS, INTENTE OTRA VEZ ❌\n");
