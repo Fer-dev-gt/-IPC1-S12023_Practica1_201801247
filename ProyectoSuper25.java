@@ -2,7 +2,7 @@ package proyectosuper25;
 import java.util.Scanner;                                                                      // Libreria para guardar inputs de tipo texto
 import static java.lang.Integer.parseInt;                                                      // Libreria para castear datos de tipo String a tipo int
 /**
- * @author fernandoorozco
+ * @author fernandoorozcoaa
  */
 public class ProyectoSuper25 {
         static Scanner entrada = new Scanner(System.in);                                  // Creamos objeto global "entrada" tipo Scanner 
